@@ -15,14 +15,22 @@ export default function CreateNewsPage() {
   const [form, setForm] = useState({
     title_ar: '', title: '', content: '', excerpt: '',
     image: '', gallery: [] as string[],
-    category: 'news', featured: false, published: true
+    category: 'news', featured: false, published: true,
+    published_at: new Date().toISOString().split('T')[0], // التاريخ الحالي
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await newsAPI.create(form);
+      // تحويل published_at إلى صيغة ISO إذا احتجنا
+      const dataToSend = {
+        ...form,
+        published_at: form.published_at
+          ? new Date(form.published_at + 'T12:00:00').toISOString()
+          : undefined,
+      };
+      await newsAPI.create(dataToSend);
       toast.success('تم إضافة الخبر بنجاح', { icon: '✓', style: { background: '#159C4B', color: '#fff' } });
       router.push('/news');
     } catch {
@@ -69,6 +77,16 @@ export default function CreateNewsPage() {
                 <option value="health">الصحة</option>
                 <option value="education">التعليم</option>
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">تاريخ النشر</label>
+              <input
+                type="date"
+                value={form.published_at}
+                onChange={e => setForm({...form, published_at: e.target.value})}
+                className="w-full p-3 border rounded-xl"
+              />
+              <p className="text-xs text-gray-500 mt-1">إذا لم تختر تاريخاً فسيتم استخدام التاريخ الحالي</p>
             </div>
             <div className="flex gap-4">
               <label className="flex items-center gap-2">
