@@ -133,6 +133,11 @@ export const settingsAPI = {
   update: (key: string, value: any) => fetchAPI(`/admin/settings/${key}`, { method: 'PUT', body: JSON.stringify({ value }) }),
 };
 
+// ========== الكاش ==========
+export const cacheAPI = {
+  clearAll: () => fetchAPI('/admin/cache/clear', { method: 'POST' }),
+};
+
 // ========== المستخدمين ==========
 export const usersAPI = {
   getAll: () => fetchAPI('/admin/users'),
@@ -153,3 +158,4 @@ export const searchAPI = {
   filtered: (q: string, tables: string[]) => fetchAPI('/search/filtered', { method: 'POST', body: JSON.stringify({ q, tables }) }),
   autocomplete: (q: string) => fetchAPI(`/search/autocomplete?q=${encodeURIComponent(q)}`),
 };
+
