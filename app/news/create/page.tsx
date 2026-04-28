@@ -16,18 +16,18 @@ export default function CreateNewsPage() {
     title_ar: '', title: '', content: '', excerpt: '',
     image: '', gallery: [] as string[],
     category: 'news', featured: false, published: true,
-    created_at: new Date().toISOString().split('T')[0], // التاريخ الحالي
+    published_at: new Date().toISOString().split('T')[0], // التاريخ الحالي
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // تحويل created_at إلى صيغة ISO إذا احتجنا
+      // تحويل published_at إلى صيغة ISO إذا احتجنا
       const dataToSend = {
         ...form,
-        created_at: form.created_at
-          ? new Date(form.created_at + 'T12:00:00').toISOString()
+        published_at: form.published_at
+          ? new Date(form.published_at + 'T12:00:00').toISOString()
           : undefined,
       };
       await newsAPI.create(dataToSend);
@@ -79,11 +79,11 @@ export default function CreateNewsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">تاريخ الانشاء</label>
+              <label className="block text-sm font-medium mb-2">تاريخ النشر</label>
               <input
                 type="date"
-                value={form.created_at}
-                onChange={e => setForm({...form, created_at: e.target.value})}
+                value={form.published_at}
+                onChange={e => setForm({...form, published_at: e.target.value})}
                 className="w-full p-3 border rounded-xl"
               />
               <p className="text-xs text-gray-500 mt-1">إذا لم تختر تاريخاً فسيتم استخدام التاريخ الحالي</p>

@@ -19,7 +19,7 @@ type NewsForm = {
   category?: string;
   featured?: boolean;
   published?: boolean;
-  updated_at?: string;
+  published_at?: string;
 };
 
 function formatDateForInput(dateStr?: string): string {
@@ -40,7 +40,7 @@ export default function EditNewsPage() {
       newsAPI.getOne(Number(id)).then((data: any) => {
         setForm({
           ...data,
-          updated_at: formatDateForInput(data.updated_at),
+          published_at: formatDateForInput(data.published_at),
         });
       }).catch(() => router.push('/news'));
     }
@@ -53,8 +53,8 @@ export default function EditNewsPage() {
     try {
       const dataToSend = {
         ...form,
-        updated_at: form.updated_at
-          ? new Date(form.updated_at + 'T12:00:00').toISOString()
+        published_at: form.published_at
+          ? new Date(form.published_at + 'T12:00:00').toISOString()
           : undefined,
       };
       await newsAPI.update(Number(id), dataToSend);
@@ -81,11 +81,11 @@ export default function EditNewsPage() {
             <div><label>مقتطف</label><input type="text" value={form.excerpt || ''} onChange={e => setForm({...form, excerpt: e.target.value})} className="w-full p-3 border rounded-xl" /></div>
             <div><label>التصنيف</label><select value={form.category || 'news'} onChange={e => setForm({...form, category: e.target.value})} className="w-full p-3 border rounded-xl"><option value="news">أخبار عامة</option><option value="food-security">الأمن الغذائي</option><option value="health">الصحة</option><option value="education">التعليم</option></select></div>
             <div>
-              <label className="block text-sm font-medium mb-2">تاريخ الانشاء</label>
+              <label className="block text-sm font-medium mb-2">تاريخ النشر</label>
               <input
                 type="date"
-                value={form.updated_at || ''}
-                onChange={e => setForm({...form, updated_at: e.target.value})}
+                value={form.published_at || ''}
+                onChange={e => setForm({...form, published_at: e.target.value})}
                 className="w-full p-3 border rounded-xl"
               />
               <p className="text-xs text-gray-500 mt-1">إذا لم تختر تاريخاً فسيتم استخدام التاريخ الحالي</p>
