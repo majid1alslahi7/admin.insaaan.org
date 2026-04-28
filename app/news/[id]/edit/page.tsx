@@ -19,7 +19,7 @@ type NewsForm = {
   category?: string;
   featured?: boolean;
   published?: boolean;
-  created_at?: string;
+  updated_at?: string;
 };
 
 function formatDateForInput(dateStr?: string): string {
@@ -40,7 +40,7 @@ export default function EditNewsPage() {
       newsAPI.getOne(Number(id)).then((data: any) => {
         setForm({
           ...data,
-          created_at: formatDateForInput(data.created_at),
+          updated_at: formatDateForInput(data.updated_at),
         });
       }).catch(() => router.push('/news'));
     }
@@ -53,8 +53,8 @@ export default function EditNewsPage() {
     try {
       const dataToSend = {
         ...form,
-        created_at: form.created_at
-          ? new Date(form.created_at + 'T12:00:00').toISOString()
+        updated_at: form.updated_at
+          ? new Date(form.updated_at + 'T12:00:00').toISOString()
           : undefined,
       };
       await newsAPI.update(Number(id), dataToSend);
@@ -84,8 +84,8 @@ export default function EditNewsPage() {
               <label className="block text-sm font-medium mb-2">تاريخ الانشاء</label>
               <input
                 type="date"
-                value={form.created_at || ''}
-                onChange={e => setForm({...form, created_at: e.target.value})}
+                value={form.updated_at || ''}
+                onChange={e => setForm({...form, updated_at: e.target.value})}
                 className="w-full p-3 border rounded-xl"
               />
               <p className="text-xs text-gray-500 mt-1">إذا لم تختر تاريخاً فسيتم استخدام التاريخ الحالي</p>
